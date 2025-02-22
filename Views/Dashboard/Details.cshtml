@@ -1,4 +1,4 @@
-﻿@model VideoGame;
+﻿@model VideoGameDetailsViewModel;
 <div class="row">
     <div class="col-lg-12">
         <div class="page-content">
@@ -9,7 +9,7 @@
                     <div class="feature-banner header-text">
                         <div class="row">
                             <div class="col-lg-12">
-                                <img src="~/images/@Model.ImageName" alt="" style="border-radius: 23px;">
+                                <img src="~/images/@Model.VideoGame.ImageName" alt="" style="border-radius: 23px;">
                             </div>
                         </div>
                     </div>
@@ -28,8 +28,10 @@
                                 <div class="col-lg-6">
                                     <div class="left-info">
                                         <div class="left">
-                                            <h4>@Model.Name</h4>
-                                            <span>@Model.Genre</span>
+                                            <h4>@Model.VideoGame.Name</h4>
+                                            <span>@Model.VideoGame.Genre</span>
+                                            <span>@Model.VideoGame.Developer</span>
+                                            <span>@Model.VideoGame.ReleaseYear</span>
                                         </div>
                                         <ul>
                                             <li><i class="fa fa-star"></i> 4.8</li>
@@ -40,8 +42,10 @@
                                 <div class="col-lg-6">
                                     <div class="right-info">
                                         <ul>
-                                          <li>@Model.Developer</li>
-                                          <li>@Model.ReleaseYear</li>
+                                            @foreach(string name in Model.Platforms){
+                                                <li>@name</li>
+                                            }
+                                          
                                         </ul>
                                     </div>
                                 </div>

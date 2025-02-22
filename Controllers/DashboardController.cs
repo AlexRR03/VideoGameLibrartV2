@@ -21,11 +21,17 @@ namespace ProyectoJuegos.Controllers
         public async Task<IActionResult> Details (int id)
         {
             VideoGame videoGame = await this.repo.FindVideoGameAsync(id);
-            if (videoGame == null) 
-            { 
-                return RedirectToAction("Error","Shared");
+            if (videoGame == null)
+            {
+                return RedirectToAction("Error", "Shared");
             }
-            return View(videoGame);
+            List<string> platforms = await this.repo.GetPlatformsGameAsync(videoGame.Name);
+            var viewModel = new VideoGameDetailsViewModel
+            {
+                VideoGame = videoGame,
+                Platforms = platforms
+            };
+            return View(viewModel);
         }
     }
 }
