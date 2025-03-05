@@ -826,9 +826,12 @@ Most Popular Style
   margin-bottom: 0px;
 }
 
-.most-popular .item img {
-  border-radius: 23px;
-}
+    .most-popular .item img {
+        width: 100%; 
+        height: 200px; 
+        object-fit: cover;
+        border-radius: 23px;
+    }
 
 .most-popular .item h4 {
   font-size: 15px;
@@ -1314,21 +1317,24 @@ Game Details Style
   background-color: #1f2122;
 }
 
-.game-details .content .left-info {
-  background-color: #27292a;
-  border-radius: 23px;
-  padding: 30px;
-  margin-bottom: 30px;
-}
+    .game-details .content .left-info {
+        background-color: #27292a;
+        border-radius: 23px;
+        padding: 30px;
+        margin-bottom: 30px;
+        min-height: 200px;
+        height: auto;
+    }
 
 .game-details .content .left-info .left {
   float: left;
 }
 
-.game-details .content .left-info h4 {
-  font-size: 15px;
-  display: block;
-}
+        .game-details .content .left-info h4 {
+            font-size: 15px;
+            display: block;
+            margin-top: 7px;
+        }
 
 .game-details .content .left-info span {
   color: #666;
@@ -1355,20 +1361,27 @@ Game Details Style
   color: #ec6090;
 }
 
-.game-details .content .right-info {
-  background-color: #27292a;
-  border-radius: 23px;
-  padding: 30px;
-  margin-bottom: 30px;
-}
+    .game-details .content .right-info {
+        background-color: #27292a;
+        border-radius: 23px;
+        padding: 30px;
+        margin-bottom: 30px;
+        min-height: 200px;
+        height: auto;
 
-.game-details .content .right-info ul li {
-  display: inline-block;
-  width: 23%;
-  text-align: center;
-  font-size: 14px;
-  color: #fff;
-}
+    }
+
+        .game-details .content .right-info h4 {
+            position: center;
+            margin-bottom: 12px;
+        }
+        .game-details .content .right-info ul li {
+            display: inline-block;
+            width: 23%;
+            text-align: center;
+            font-size: 14px;
+            color: #fff;
+        }
 
 .game-details .content .right-info ul li i {
   display: block;
@@ -1385,11 +1398,14 @@ Game Details Style
 
 .game-details .main-border-button {
   margin-top: 35px;
+  cursor:pointer;
 }
 
 .game-details .main-border-button a {
   text-align: center;
   width: 100%;
+  
+
 } 
 
 /* 

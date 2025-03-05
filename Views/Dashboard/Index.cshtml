@@ -1,54 +1,52 @@
-﻿@model List<VideoGame>;
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="page-content">
-                    <!-- ***** Banner Start ***** -->
-                    <div class="main-banner">
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <div class="header-text">
-                                    <h6>Welcome To Cyborg</h6>
-                                    <h4><em>Browse</em> Our Popular Games Here</h4>
-                                    <div class="main-button">
-                                        <a href="browse.html">Browse Now</a>
-                                    </div>
-                                </div>
+﻿@model List<VideoGame>
+<form id="searchForm">
+    <input type="text" id="name" name="name" placeholder="Nombre del juego" />
+    <input type="text" id="genre" name="genre" placeholder="Género" />
+    <input type="number" id="year" name="year" placeholder="Año de lanzamiento" />
+    <input type="text" id="developer" name="developer" placeholder="Desarrollador" />
+    <button type="submit">Buscar</button>
+</form>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-content">
+            <!-- ***** Banner Start ***** -->
+            <div class="main-banner">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="header-text">
+                            <h6>Welcome To Cyborg</h6>
+                            <h4><em>Browse</em> Our Popular Games Here</h4>
+                            <div class="main-button">
+                                <a href="browse.html">Browse Now</a>
                             </div>
                         </div>
                     </div>
-                    <!-- ***** Banner End ***** -->
-                    <!-- ***** Most Popular Start ***** -->
-                    <div class="most-popular">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="heading-section">
-                                    <h4><em>Most Popular</em> Right Now</h4>
-                                </div>
-                                <div class="row">
-                                       @foreach(VideoGame game in Model ){
-                                        <div  class="col-lg-3 col-sm-6">
-                                            <a asp-action="Details" asp-controller="Dashboard" asp-route-id="@game.Id">
-                                            <div class="item">
-                                                <img src="~/images/@game.ImageName" alt="@game.Name">
-                                                <h4>@game.Name<br><span>@game.Genre</span></h4>
-                                            </div>
-                                            </a>
-                                        </div>
-                                       }
-                                    <div class="col-lg-12">
-                                        <div class="main-button">
-                                            <a href="browse.html">Discover Popular</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ***** Most Popular End ***** -->
                 </div>
             </div>
+            <!-- ***** Banner End ***** -->
+            <!-- ***** Most Popular Start ***** -->
+            <div class="most-popular">
+                 @await Html.PartialAsync("_VideoGamesList", Model);
+            <div class="most-popular">
+            <!-- ***** Most Popular End ***** -->
         </div>
-
-
-
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+         
+                     $(document).ready(function () {
+                        $("#searchForm").submit(function (event) {
+                            event.preventDefault(); // Prevents the page from reloading
+                            var queryString = $(this).serialize(); // Serializes the form
+                            var url = "@Url.Action("Index", "Dashboard")"; // Server URL
+                            $.get(url + "?" + queryString, function (data) {
+                                $(".most-popular").html(data);
+                            });
+                        });
+                    });
+                </script>
+}
+      
 

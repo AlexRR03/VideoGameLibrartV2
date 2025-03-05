@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProyectoJuegos.Data;
 using ProyectoJuegos.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProyectoJuegos.Repositories
 {
@@ -36,6 +37,30 @@ namespace ProyectoJuegos.Repositories
                 .ToListAsync();
 
             return platforms;
+        }
+        public async Task<List<VideoGame>> VideoGameSearch(string? name, string? genre, int? year,string? developer)
+        {
+            IQueryable<VideoGame> query = this.gamesContext.VideoGames;
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(v => EF.Functions.Like(v.Name, $"%{name}%"));
+            }
+
+            if (!string.IsNullOrEmpty(genre))
+            {
+                query = query.Where(v => EF.Functions.Like(v.Genre, $"%{genre}%"));
+            }
+
+            if (year.HasValue)
+            {
+                query = query.Where(v => v.ReleaseYear == year);
+            }
+
+            if (!string.IsNullOrEmpty(developer))
+            {
+                query = query.Where(v => EF.Functions.Like(v.Developer, $"%{developer}%"));
+            }
+            return await query.ToListAsync();
         }
 
     }
