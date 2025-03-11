@@ -8,23 +8,26 @@ namespace ProyectoJuegos.Repositories
 {
     public class Repository
     {
-        private ProjectGamesContext gamesContext;
+        private ProjectGamesContext context;
 
-        public Repository(ProjectGamesContext gamesContext)
+        public Repository(ProjectGamesContext context)
         {
-            this.gamesContext = gamesContext;
+            this.context = context;
         }
-        
+
+        #region Videojuegos
+
         //Metodo para obtener la lista de VideoJuegos que se utilizara en el dashboard
         public async Task<List<VideoGame>> GetVideoGamesAsync()
         {
-            var query = from data in this.gamesContext.VideoGames select data;
+            var query = from data in this.context.VideoGames select data;
             return await query.ToListAsync();
         }
 
+        //Metodo para obtener un VideoJuego por su Id
         public async Task<VideoGame>FindVideoGameAsync(int id)
         {
-            var query = from data in this.gamesContext.VideoGames where data.Id == id select data;
+            var query = from data in this.context.VideoGames where data.Id == id select data;
             return await query.FirstOrDefaultAsync();
         }
 
@@ -32,15 +35,16 @@ namespace ProyectoJuegos.Repositories
         {
             string sql = "EXEC SP_GetPlatformsByGame @GameName";
 
-            var platforms = await this.gamesContext.Database
+            var platforms = await this.context.Database
                 .SqlQueryRaw<string>(sql, new SqlParameter("@GameName", name))
                 .ToListAsync();
 
             return platforms;
         }
+        //Metodo para la busqueda de VideoJuegos
         public async Task<List<VideoGame>> VideoGameSearch(string? name, string? genre, int? year,string? developer)
         {
-            IQueryable<VideoGame> query = this.gamesContext.VideoGames;
+            IQueryable<VideoGame> query = this.context.VideoGames;
             if (!string.IsNullOrEmpty(name))
             {
                 query = query.Where(v => EF.Functions.Like(v.Name, $"%{name}%"));
@@ -62,6 +66,34 @@ namespace ProyectoJuegos.Repositories
             }
             return await query.ToListAsync();
         }
+        #endregion
 
+        #region Perfil
+
+        public async Task<User> LoginUserAsync(string email, string password)
+        {
+            User user = await this.context.Users.Where(u => u.Email == email && u.Password == password).FirstOrDefaultAsync();
+            return user;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #endregion
     }
 }

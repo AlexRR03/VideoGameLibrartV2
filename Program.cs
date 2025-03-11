@@ -1,19 +1,32 @@
 using Microsoft.EntityFrameworkCore;
 using ProyectoJuegos.Data;
 using ProyectoJuegos.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-
-//Add Repository
-builder.Services.AddTransient<Repository>();
-//ConnectionString
 var conString = builder.Configuration.GetConnectionString("SqlProjectGames");
-
+builder.Services.AddTransient<Repository>();
 builder.Services.AddDbContext<ProjectGamesContext>(options=>options.UseSqlServer(conString));
 
+
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie();
+
+
+
+builder.Services
+    .AddControllersWithViews
+    (options => options.EnableEndpointRouting = false)
+    .AddSessionStateTempDataProvider();
 
 
 
@@ -28,16 +41,19 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseRouting();
-
+app.UseStaticFiles();
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 
-app.MapStaticAssets();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Dashboard}/{action=Index}/{id?}")
-    .WithStaticAssets();
+
+app.UseMvc(routes =>
+{
+    routes.MapRoute(
+        name: "default",
+        template: "{controller=Dashboard}/{action=Index}/{id?}");
+});
 
 
 app.Run();

@@ -7,13 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Helpers\**" />
     <Compile Remove="wwwroot\fonts\**" />
-    <Content Remove="Helpers\**" />
     <Content Remove="wwwroot\fonts\**" />
-    <EmbeddedResource Remove="Helpers\**" />
     <EmbeddedResource Remove="wwwroot\fonts\**" />
-    <None Remove="Helpers\**" />
     <None Remove="wwwroot\fonts\**" />
   </ItemGroup>
 
@@ -23,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Helpers\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

@@ -8,5 +8,6 @@ namespace ProyectoJuegos.Data
         public ProjectGamesContext(DbContextOptions<ProjectGamesContext> options) : base(options) { }
     
         public DbSet<VideoGame> VideoGames { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
