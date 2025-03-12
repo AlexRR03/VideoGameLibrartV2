@@ -25,17 +25,15 @@ namespace ProyectoJuegos.Controllers
             if(user != null)
             {
                 // Create the claims
-                var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-        };
+                // Crear la identidad
+                ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
 
-                // Create the identity
-                ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                // Agregar los claims paso a paso
+                identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
+                identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
 
-                // Create the principal
+                // Crear el principal
                 ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);

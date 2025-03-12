@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
 var conString = builder.Configuration.GetConnectionString("SqlProjectGames");
 builder.Services.AddTransient<Repository>();
 builder.Services.AddDbContext<ProjectGamesContext>(options=>options.UseSqlServer(conString));

@@ -8,8 +8,8 @@ namespace ProyectoJuegos.Controllers
         [AuthorizeUsers]
         public IActionResult Profile()
         {
-            var claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList();
-            return View(claims);
+            
+            return View();
         }
     }
 }

@@ -1,18 +1,21 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Security.Claims;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProyectoJuegos.Data;
 using ProyectoJuegos.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace ProyectoJuegos.Repositories
 {
     public class Repository
     {
         private ProjectGamesContext context;
+        private IHttpContextAccessor contextAccessor;
 
-        public Repository(ProjectGamesContext context)
+        public Repository(ProjectGamesContext context, IHttpContextAccessor contextAccessor)
         {
             this.context = context;
+            this.contextAccessor = contextAccessor;
         }
 
         #region Videojuegos
@@ -75,25 +78,28 @@ namespace ProyectoJuegos.Repositories
             User user = await this.context.Users.Where(u => u.Email == email && u.Password == password).FirstOrDefaultAsync();
             return user;
         }
+        #endregion
 
+        #region VideoGames
+        public async Task AddGameToLibraryAsync(int idVideoGame, int playtimeHours,string status)
+        {
+            string dato = this.contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            int idUser = int.Parse(dato);
 
+            UserVideoGame userVideoGame = new UserVideoGame();
+            userVideoGame.UserId = idUser;
+            userVideoGame.VideoGameId =idVideoGame ;
+            userVideoGame.PlayTimeHours = playtimeHours;
+            userVideoGame.Status = status;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            await this.context.UserVideoGames.AddAsync(userVideoGame);
+            await this.context.SaveChangesAsync();
+        }
+        
+        
 
 
         #endregion
+
     }
 }

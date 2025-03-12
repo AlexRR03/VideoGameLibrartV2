@@ -1,0 +1,27 @@
+﻿@model VideoGame
+@{
+ List<string> gameStatus = ViewData["STATUS"] as List<string>;
+}
+<div class="main-banner">
+    <div class="row">
+        <form id="searchForm">
+            <div class="col-lg-4">
+
+                <div class="header-text">
+                    <label>Id:@Model.Id</label>
+                   <input type="text" name="idVideoGame" value="@Model.Id" />
+                    @foreach (string status in gameStatus)
+                    {
+                        <label>Status: @status</label>
+                    }
+
+                    <div class="main-button"> <button type="submit">Buscar</button></div>
+                </div>
+
+
+            </div>
+
+        </form>
+    </div>
+
+</div>

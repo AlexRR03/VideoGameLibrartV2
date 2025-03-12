@@ -156,7 +156,7 @@ p {
 	border-radius: 23px;
 }
 
-.main-button a {
+.main-button a, button {
   font-size: 14px;
   color: #fff;
   background-color: #e75e8d;
@@ -171,7 +171,7 @@ p {
   overflow: hidden;
 }
 
-.main-button a:hover {
+.main-button a:hover, button:hover {
   background-color: #fff;
   color: #e75e8d;
 }
@@ -773,12 +773,12 @@ Banner Style
 */
 
 .main-banner {
-  background-image: url(../images/banner-bg.jpg);
-  background-position: center center;
-  background-size: cover;
-  min-height: 380px;
-  border-radius: 23px;
-  padding: 80px 60px;
+    background-color: #1f2122;
+    background-position: center center;
+    background-size: cover;
+    min-height: 380px;
+    border-radius: 23px;
+    padding: 80px 60px;
 }
 
 .main-banner h6 {
@@ -798,18 +798,24 @@ Banner Style
   font-style: normal;
   color: #ec6090;
 }
-
+.main-banner label {
+        font-style: normal;
+        color: #ec6090;
+}
+    .main-banner .main-button {
+        
+       margin-top:20px;
+    }
 /* 
 ---------------------------------------------
 Most Popular Style
 --------------------------------------------- 
 */
-
 .most-popular {
-  margin-top: 60px;
-  padding: 30px;
-  background-color: #1f2122;
-  border-radius: 23px;
+    margin-top: 60px;
+    padding: 30px;
+    background-color: #1f2122;
+    border-radius: 23px;
 }
 
 .most-popular .item {
@@ -1280,7 +1286,7 @@ Featured Banner Style
   position: relative;
   max-height: 305px;
   overflow: hidden;
-  border-radius: 23px;;
+  border-radius: 23px;
 }
 
 .feature-banner .thumb a {
@@ -1296,6 +1302,12 @@ Featured Banner Style
   text-align: center;
   line-height: 46px;
   color: #ec6090;
+}
+.feature-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 23px;
 }
 
 /* 
