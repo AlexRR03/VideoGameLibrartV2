@@ -123,6 +123,14 @@ namespace ProyectoJuegos.Repositories
                 }
             }
         }
+        public async Task<UserVideoGame> FindVideoGameLibraryAsync(int id)
+        {
+            string dato = this.contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            int userId = int.Parse(dato);
+            return await this.context.UserVideoGames
+        .Where(uvg => uvg.Id == id && uvg.UserId == userId)
+        .FirstOrDefaultAsync();
+        }
 
         public async Task<List<UserVideoGameModel>>GetVideoGamesByUserAsync()
         {
@@ -149,6 +157,30 @@ namespace ProyectoJuegos.Repositories
 
             await this.context.UserVideoGames.AddAsync(userVideoGame);
             await this.context.SaveChangesAsync();
+        }
+
+        public async Task  UpdateVideoGameLibrary(int idVideoGame, int playtimeHours, string status)
+        {
+            string dato = this.contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            int idUser = int.Parse(dato);
+            UserVideoGame userVideoGame = await this.FindVideoGameLibraryAsync(idVideoGame);
+            if (userVideoGame != null)
+            {
+                userVideoGame.PlayTimeHours = playtimeHours;
+                userVideoGame.Status = status;
+                await this.context.SaveChangesAsync();
+            }
+
+        }
+
+        public async Task DeleteVideoGameLibraryAsync(int id)
+        {
+            UserVideoGame userVideoGame = await this.FindVideoGameLibraryAsync(id);
+            if (userVideoGame != null)
+            {
+                this.context.UserVideoGames.Remove(userVideoGame);
+                await this.context.SaveChangesAsync();
+            }
         }
 
 
@@ -180,6 +212,20 @@ namespace ProyectoJuegos.Repositories
             user.PasswordHash = HelperCriptography.EncryptPass(password,user.Salt);
             await this.context.Users.AddAsync(user);
             await this.context.SaveChangesAsync();
+        }
+
+        public async Task<UserList> CreateUserListAsync(string name, string description)
+        {
+            string dato = this.contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            int userId = int.Parse(dato);
+            UserList userList = new UserList();
+            userList.UserId = userId;
+            userList.Name = name;
+            userList.Description = description;
+            this.context.UserList.Add(userList);
+            await this.context.SaveChangesAsync();
+            return userList;
+
         }
 
 

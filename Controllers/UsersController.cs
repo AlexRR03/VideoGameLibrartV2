@@ -42,5 +42,16 @@ namespace ProyectoJuegos.Controllers
             await this.repo.RegisterUserAsync(username, email, password);
             return RedirectToAction("Index","Dashboard");
         }
+
+        public IActionResult CreateList()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateList(UserList userList)
+        {
+            await this.repo.CreateUserListAsync(userList.Name, userList.Description);
+            return RedirectToAction("Index", "Dashboard");
+        }
     }
 }

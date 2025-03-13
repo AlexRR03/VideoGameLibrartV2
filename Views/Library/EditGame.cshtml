@@ -1,0 +1,34 @@
+﻿@model UserVideoGame
+@{
+    List<string> gameStatus = ViewData["STATUS"] as List<string>;
+}
+<div class="main-banner">
+    <h4>
+        <em>
+            Modify Videogame
+        </em>
+    </h4>
+
+
+    <form method="post">
+        <input hidden class="form-control" type="text" name="VideoGameId" value="@Model.Id" />
+        <label class="form-label">Game status</label>
+        <select name="status" class="form-control">
+
+            
+                @foreach (string status in gameStatus)
+                {
+                    if (status != null)
+                    {
+                        <option value="@status">@status</option>
+                    }
+                }
+           
+        </select>
+        <label class="form-label">Playtime hours</label>
+        <input class="form-control" name="playTimeHours" type="number" value="@Model.PlayTimeHours" />
+
+        <div class="main-button"> <button type="submit">Add</button></div>
+    </form>
+
+</div>
