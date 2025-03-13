@@ -3,20 +3,16 @@
  List<string> gameStatus = ViewData["STATUS"] as List<string>;
 }
 <div class="main-banner">
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="header-text">
-                <h4>Videogame selected</h4>
-                <p>@Model.Name</p>
-            </div>
-        </div>
-        
-            <div class="col-lg-4">
+    <h4>
+        <em>
+            Videogame: @Model.Name
+        </em>
+    </h4>
                 
-                <div class="header-text">
+               
                 <form method="post">
-                   <input  class="form-control" type="text" name="VideoGameId" value="@Model.Id" />
-
+                   <input hidden  class="form-control" type="text" name="VideoGameId" value="@Model.Id" />
+                   <label class="form-label">Game status</label>
                    <select name="status" class="form-control">
                     
                     @foreach (string status in gameStatus)
@@ -24,17 +20,10 @@
                        <option value="@status">@status</option>
                     }
                     </select>
-                    <label>Playtime hours</label>
-                    <input name="playTimeHours" type="number" />
+                    <label class="form-label">Playtime hours</label>
+                    <input class="form-control" name="playTimeHours" type="number" />
 
                     <div class="main-button"> <button type="submit">Add</button></div>
             </form>
-                </div>
-
-           
-            </div>
-
-        
-    </div>
 
 </div>

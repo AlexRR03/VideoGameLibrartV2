@@ -1,90 +1,28 @@
 ﻿@using System.Security.Claims;
+@model List<UserVideoGameModel>
 
 
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-content">
+                <!-- ***** Banner Start ***** -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="main-profile ">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="main-info header-text">
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="main-profile ">
-            <div class="row">
-                <div class="col-lg-4">
-                    <img src="assets/images/profile.jpg" alt="" style="border-radius: 23px;">
-                </div>
-                <div class="col-lg-4 align-self-center">
-                    <div class="main-info header-text">
-                        <span>User</span>
-                        <h4>@User.FindFirst(ClaimTypes.Name)?.Value</h4>
-                        <h4>@User.FindFirst(ClaimTypes.Email)?.Value</h4>
-                    </div>
-                </div>
-                <div class="col-lg-4 align-self-center">
-                    <ul>
-                        <li>Games Downloaded <span>3</span></li>
-                        <li>Friends Online <span>16</span></li>
-                        <li>Live Streams <span>None</span></li>
-                        <li>Clips <span>29</span></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="clips">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="heading-section">
-                                    <h4><em>Your Most Popular</em> Clips</h4>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="item">
-                                    <div class="thumb">
-                                        <img src="assets/images/clip-01.jpg" alt="" style="border-radius: 23px;">
-                                        <a href="https://www.youtube.com/watch?v=r1b03uKWk_M" target="_blank"><i class="fa fa-play"></i></a>
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>First Clip</h4>
-                                        <span><i class="fa fa-eye"></i> 250</span>
+                                        <h4>Username: @User.FindFirst(ClaimTypes.Name).Value</h4>
+                                        <p>Email: @User.FindFirst(ClaimTypes.Email).Value</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="item">
-                                    <div class="thumb">
-                                        <img src="assets/images/clip-02.jpg" alt="" style="border-radius: 23px;">
-                                        <a href="https://www.youtube.com/watch?v=r1b03uKWk_M" target="_blank"><i class="fa fa-play"></i></a>
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Second Clip</h4>
-                                        <span><i class="fa fa-eye"></i> 183</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="item">
-                                    <div class="thumb">
-                                        <img src="assets/images/clip-03.jpg" alt="" style="border-radius: 23px;">
-                                        <a href="https://www.youtube.com/watch?v=r1b03uKWk_M" target="_blank"><i class="fa fa-play"></i></a>
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Third Clip</h4>
-                                        <span><i class="fa fa-eye"></i> 141</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="item">
-                                    <div class="thumb">
-                                        <img src="assets/images/clip-04.jpg" alt="" style="border-radius: 23px;">
-                                        <a href="https://www.youtube.com/watch?v=r1b03uKWk_M" target="_blank"><i class="fa fa-play"></i></a>
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Fourth Clip</h4>
-                                        <span><i class="fa fa-eye"></i> 91</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="main-button">
-                                    <a href="#">Load More Clips</a>
+                                <div class="col-lg-6 align-self-center">
+                                    <ul>
+                                        <li>Games Libary <span>@ViewData["VIDEOGAMESNUMBER"]</span></li>
+                                        <li>Most Played <span>@ViewData["MOSTPLAYED"]</span></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -94,3 +32,45 @@
         </div>
     </div>
 </div>
+
+@if (Model.Count > 0)
+{
+    <div class="gaming-library profile-library">
+        <div class="col-lg-12">
+            <div class="heading-section">
+                <h4><em>Your Gaming</em> Library</h4>
+            </div>
+                    @foreach(var game in Model){
+                    <div class="item">
+                        <ul>
+                        <li><img src="~/images/@game.ImageName" alt="@game.ImageName" class="templatemo-item"></li>
+                        <li><h4>Name</h4><span>@game.Name</span></li>
+                        <li><h4>Genre</h4><span>@game.Genre</span></li>
+                        <li><h4>Hours Played</h4><span>@game.PlayTimeHours</span></li>
+                        <li><h4>Status</h4><span>@game.status</span></li>
+                        <li><div class="main-border-button border-no-active"><a asp-action="Details"
+                        asp-controller="Dashboard" asp-route-id="@game.VideoGameId">Details</a></div></li>
+                    
+                        </ul>
+                    </div>
+                    }
+                  
+        </div>
+    </div>
+
+}else{
+
+    <div class="gaming-library profile-library">
+        <div class="col-lg-12">
+            <div class="heading-section">
+                <h4>Your Library is empty</h4>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+

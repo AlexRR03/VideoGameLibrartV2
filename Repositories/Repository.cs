@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using ProyectoJuegos.Data;
 using ProyectoJuegos.Models;
 
@@ -77,6 +78,16 @@ namespace ProyectoJuegos.Repositories
         {
             User user = await this.context.Users.Where(u => u.Email == email && u.Password == password).FirstOrDefaultAsync();
             return user;
+        }
+
+        public async Task<List<UserVideoGameModel>>GetVideoGamesByUserAsync()
+        {
+            string dato = this.contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            int userId = int.Parse(dato);
+            var result = await context.Database.SqlQueryRaw<UserVideoGameModel>("SP_GetGamesByUser @UserId", new SqlParameter("@UserId", userId)).ToListAsync();
+            return result;
+
+
         }
         #endregion
 
