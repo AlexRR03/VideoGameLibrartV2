@@ -14,7 +14,6 @@ namespace ProyectoJuegos.Models
         [Column("VideoGameId")]
         public int VideoGameId { get; set; }
 
-        public UserList UserList { get; set; }
-        public VideoGame VideoGame { get; set; }
+
     }
 }

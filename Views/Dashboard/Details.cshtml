@@ -49,11 +49,18 @@
                                 <div class="col-lg-12 text-center">
                                     <p>@Model.VideoGame.Description</p>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="main-border-button">
                                         <a asp-controller="Library"
                                         asp-action="AddGame"
                                         asp-route-idVideoGame="@Model.VideoGame.Id"> Add @Model.VideoGame.Name to youre library</a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="main-border-button">
+                                        <a asp-controller="User"
+                                           asp-action="AddGameToList"
+                                           asp-route-idVideoGame="@Model.VideoGame.Id"> Add @Model.VideoGame.Name to a list</a>
                                     </div>
                                 </div>
                             </div>

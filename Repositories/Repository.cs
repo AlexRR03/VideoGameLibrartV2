@@ -228,8 +228,30 @@ namespace ProyectoJuegos.Repositories
 
         }
 
+        public async Task<List<UserList>> GetUserListsAsync()
+        {
+            
+            string dato = this.contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            int userId = int.Parse(dato);
 
-            #endregion
+            // Filtrar listas por usuario
+            return await this.context.UserList
+                .Where(list => list.UserId == userId)
+                .ToListAsync();
+        }
+        public async Task<UserListVideoGame> AddVideoGameToLIst(int idVideoGame,int userList)
+        {
+            string dato = this.contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            int userId = int.Parse(dato);
+            UserListVideoGame userListVideoGame = new UserListVideoGame();
+            userListVideoGame.UserListId = userList ;
+            userListVideoGame.VideoGameId = idVideoGame;
+            return userListVideoGame;
+
 
         }
+
+        #endregion
+
+    }
 }

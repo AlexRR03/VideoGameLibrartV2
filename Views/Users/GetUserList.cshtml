@@ -1,0 +1,14 @@
+﻿@model List<UserList>
+
+
+    @foreach (UserList userList in Model)
+{
+    <ul class="list-group">
+        <li class="list-group-item">
+            @userList.Name
+        </li>
+        <li class="list-group-item">
+            @userList.Description
+        </li>
+</ul>
+    })
