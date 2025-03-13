@@ -16,7 +16,13 @@ namespace ProyectoJuegos.Models
         [Column("Email")]
         public string Email { get; set; }
 
-        [Column("PasswordHas")]
+        [Column("Password")]
         public string Password { get; set; }
+
+        [Column("Salt")]
+        public string Salt { get; set; }
+
+        [Column("PasswordHas")]
+        public byte[] PasswordHash { get; set; }
     }
 }

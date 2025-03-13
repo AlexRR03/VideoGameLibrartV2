@@ -1,15 +1,38 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using ProyectoJuegos.Data;
+using ProyectoJuegos.Helpers;
 using ProyectoJuegos.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace ProyectoJuegos.Repositories
 {
     public class Repository
     {
+        #region Procedures
+//        CREATE PROCEDURE SP_GetGamesByUser
+//@userId INT
+//AS
+//BEGIN
+//    SELECT
+//        vg.Id AS VideoGameId,
+//        vg.[Name],
+//        vg.Genre,
+//        vg.Developer,
+//		vg.ImageName,
+//        uvg.PlayTimeHours,
+//		uvg.[Status]
+//    FROM VideoGame vg
+//    INNER JOIN UserVideoGame uvg ON vg.Id = uvg.VideoGameId
+//    WHERE uvg.UserId = @userId;
+//        END;
+//GO
+        #endregion
+
         private ProjectGamesContext context;
         private IHttpContextAccessor contextAccessor;
 
@@ -76,8 +99,29 @@ namespace ProyectoJuegos.Repositories
 
         public async Task<User> LoginUserAsync(string email, string password)
         {
-            User user = await this.context.Users.Where(u => u.Email == email && u.Password == password).FirstOrDefaultAsync();
-            return user;
+            var consulta = from data in this.context.Users
+                           where data.Email == email
+                           select data;
+            User user = await consulta.FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return null;
+            }
+            else
+            {
+                string salt = user.Salt;
+                byte[] temp = HelperCriptography.EncryptPass(password, salt);
+                byte[] passHas = user.PasswordHash;
+                bool response = HelperCriptography.ComparePass(temp, passHas);
+                if(response)
+                {
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         public async Task<List<UserVideoGameModel>>GetVideoGamesByUserAsync()
@@ -106,11 +150,40 @@ namespace ProyectoJuegos.Repositories
             await this.context.UserVideoGames.AddAsync(userVideoGame);
             await this.context.SaveChangesAsync();
         }
-        
-        
+
+
 
 
         #endregion
 
-    }
+        #region Users
+        private async Task<int> GetMaxIdUser()
+        {
+            if (this.context.Users.Count() == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return await this.context.Users.MaxAsync(u => u.Id) + 1;
+            }
+        }
+
+        public async Task RegisterUserAsync(string username, string email, string password)
+        {
+            User user = new User();
+            user.Id = await this.GetMaxIdUser();
+            user.Username = username;
+            user.Email = email;
+            user.Password = password;
+            user.Salt = HelperCriptography.GenerateSalt();
+            user.PasswordHash = HelperCriptography.EncryptPass(password,user.Salt);
+            await this.context.Users.AddAsync(user);
+            await this.context.SaveChangesAsync();
+        }
+
+
+            #endregion
+
+        }
 }
