@@ -4,24 +4,37 @@
 }
 <div class="main-banner">
     <div class="row">
-        <form id="searchForm">
+        <div class="col-lg-8">
+            <div class="header-text">
+                <h4>Videogame selected</h4>
+                <p>@Model.Name</p>
+            </div>
+        </div>
+        
             <div class="col-lg-4">
-
+                
                 <div class="header-text">
-                    <label>Id:@Model.Id</label>
-                   <input type="text" name="idVideoGame" value="@Model.Id" />
+                <form method="post">
+                   <input  class="form-control" type="text" name="VideoGameId" value="@Model.Id" />
+
+                   <select name="status" class="form-control">
+                    
                     @foreach (string status in gameStatus)
                     {
-                        <label>Status: @status</label>
+                       <option value="@status">@status</option>
                     }
+                    </select>
+                    <label>Playtime hours</label>
+                    <input name="playTimeHours" type="number" />
 
-                    <div class="main-button"> <button type="submit">Buscar</button></div>
+                    <div class="main-button"> <button type="submit">Add</button></div>
+            </form>
                 </div>
 
-
+           
             </div>
 
-        </form>
+        
     </div>
 
 </div>

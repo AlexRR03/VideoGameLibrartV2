@@ -26,7 +26,8 @@ namespace ProyectoJuegos.Controllers
         [HttpPost]
         public async Task<IActionResult> AddGame(UserVideoGame userVideoGame)
         {
-            return View();
+             await this.repo.AddGameToLibraryAsync(userVideoGame.VideoGameId, userVideoGame.PlayTimeHours, userVideoGame.Status);
+            return RedirectToAction("Profile","Users");
         }
     }
 }
