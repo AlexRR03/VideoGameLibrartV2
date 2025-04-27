@@ -2,19 +2,23 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoJuegos.Data;
 using ProyectoJuegos.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ProyectoJuegos.Services;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
-var conString = builder.Configuration.GetConnectionString("SqlProjectGames");
-builder.Services.AddTransient<Repository>();
-builder.Services.AddDbContext<ProjectGamesContext>(options=>options.UseSqlServer(conString));
+builder.Services.AddTransient<ApiService>();
+
 
 
 
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession();
+builder.Services.AddSession(options=>{
+    options.IdleTimeout = TimeSpan.FromDays(30);
+
+});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -36,10 +40,10 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
+}
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
