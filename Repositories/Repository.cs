@@ -139,7 +139,6 @@ namespace ProyectoJuegos.Repositories
             var result = await context.Database.SqlQueryRaw<UserVideoGameModel>("SP_GetGamesByUser @UserId", new SqlParameter("@UserId", userId)).ToListAsync();
             return result;
 
-
         }
         #endregion
 
