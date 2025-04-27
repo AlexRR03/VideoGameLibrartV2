@@ -38,12 +38,12 @@ namespace ProyectoJuegos.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Register(string username, string email, string password)
-        //{
-        //    await this.repo.RegisterUserAsync(username, email, password);
-        //    return RedirectToAction("Index", "Dashboard");
-        //}
+        [HttpPost]
+        public async Task<IActionResult> Register(string username, string email, string password)
+        {
+            await this.service.InsertUsuarioAsync(username, email, password);
+            return RedirectToAction("Index", "Dashboard");
+        }
 
         //public IActionResult CreateList()
         //{

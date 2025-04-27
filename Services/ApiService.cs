@@ -35,7 +35,7 @@ namespace ProyectoJuegos.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string token = await response.Content.ReadAsStringAsync();
-                     
+
 
                     return token;
                 }
@@ -136,15 +136,34 @@ namespace ProyectoJuegos.Services
         {
             string request = "api/UserVideoGames/VideoGamesUser";
             string token = this.conntextAccesor.HttpContext.User.FindFirst("TOKEN")?.Value;
-            List<UserVideoGameModel> videoGames = await this.CallApiAsync<List<UserVideoGameModel>>(request,token);
+            List<UserVideoGameModel> videoGames = await this.CallApiAsync<List<UserVideoGameModel>>(request, token);
             return videoGames;
         }
+        public async Task AddGameToLibraryAsync(int idVideoGame, int playtimeHours, string status)
+        {
+            string requestUrl = $"api/UserVideoGames/AddVideoGameUserLibrary?idVideoGame={idVideoGame}&playtimeHours={playtimeHours}&status={status}";
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.urlApi);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                string token = this.conntextAccesor.HttpContext.User.FindFirst("TOKEN")?.Value;
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                HttpResponseMessage response = await client.PostAsync(requestUrl, null);
 
+            }
+        }
+        public async Task InsertUsuarioAsync(string username, string email, string password)
+        {
+            string requestUrl = $"api/Users?nombre={username}&email={email}&pass={password}";
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.urlApi);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.PostAsync(requestUrl, null);
 
-
-
-
-
-    } 
+            }
+        }
+    }
 }
-
